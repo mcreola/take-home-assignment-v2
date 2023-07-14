@@ -50,7 +50,7 @@ performance, increased reliability, granular scalability and simplified decoupli
 [Benefits of Message Queues](https://aws.amazon.com/message-queue/benefits/). With a message broker in place, the `SOAP`
 connection to the `Billing Service` could be removed which indicates a legacy implementation/flow anyway.
 
-The `Billing Service` potentially needs its own storage, a `Billing Store`, to persist billing relevant data, e.g.
+The `Billing Service` possibly needs its own storage, a `Billing Store`, to persist billing relevant data, e.g.
 invoice status etc. In order to manage billing relevant data a `Billing GUI` could be added.
 
 As shown in diagrams `Architecture 2` and `Architecture 3` it makes sense to decouple user related data from pricing
@@ -69,24 +69,23 @@ The `Platform Service` abstracts the downstream service(s) of the `Email platfor
 
 The `Support Tool GUI` is not connected to the `Mail Delivery Agent` directly.
 
-The `Pricing Service` and its dedicated `Pricing Store` decouples from user related service and storage (reasons see
-above).
+The `Pricing Service` and its dedicated `Pricing Store` decouples user related service and storage (reasons see above).
 
 #### Dislikes
 
 The same dislikes from above regarding missing asynchronous communication to the `Billing Service`, its legacy `SOAP`
 connection, the missing `Billing Storage` and `Billing GUI`. Thus, the `Billing Service` needs a connection
-to the `User Service` because there is the relevant data for billing.
+to the `User Service` in order to access the relevant data directly.
 
 The `User Config GUI` must communicate to the service it belongs: `User Service`. The hop through the `Platform Service`
 to the `User Service` implies that the `Platform Service` concerns too much about user specific data and flows. The
-`User Service` provides CRUD on user specific data and configuration therefore the `User Config GUI` must communicate
-to it directly.
+`User Service` provides CRUD on user specific data and configuration, and therefore the `User Config GUI` must
+connect to it directly.
 
-The `Pricing Service` must not connect directly to the `User Store`. CRUD operations on the `User Store` are done in the
+The `Pricing Service` must not connect to the `User Store`. CRUD operations on the `User Store` are done in the
 `User Service`, therefore a connection between these two services must be implemented in order to remove the connection
-between the `User Store` and the `Pricing Service`. Also, the connection from the `Pricing Service` to the
-`Billing Service` can be removed.
+between the `User Store` and the `Pricing Service`. The connection from the `Pricing Service` to the `Billing Service`
+can be removed.
 
 ### Diagram `Architecture 3`
 
